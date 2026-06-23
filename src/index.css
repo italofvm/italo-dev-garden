@@ -1,0 +1,58 @@
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-darkBg: #0a0a0c;
+  --color-darkCard: #121215;
+  --color-darkBorder: #1f1f23;
+  --color-lightBg: #faf9f6;
+  --color-lightCard: #ffffff;
+  --color-lightBorder: #e5e5e0;
+  --color-accent: #6366f1;
+  --color-accentHover: #4f46e5;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+}
+
+* {
+  transition:
+    background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.2s ease;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #1f1f23;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e5e5e0;
+  border-radius: 10px;
+}
+
+.page-transition {
+  animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
