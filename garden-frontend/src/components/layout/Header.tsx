@@ -26,7 +26,7 @@ export function Header({ activeTab, onChangeTab, onToggleTheme }: HeaderProps) {
               key={item.id}
               type="button"
               onClick={() => onChangeTab(item.id)}
-              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-300 ${
+              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-300 cursor-pointer ${
                 activeTab === item.id
                   ? "bg-white dark:bg-darkBg text-neutral-800 dark:text-neutral-100 shadow-xs border border-lightBorder/50 dark:border-darkBorder/50"
                   : "text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-100"

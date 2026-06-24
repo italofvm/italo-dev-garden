@@ -17,11 +17,11 @@ export function ContactSection() {
     e.preventDefault();
     const subject = encodeURIComponent(`Mensagem de ${form.nome}`);
     const body = encodeURIComponent(
-      `Nome: ${form.nome}\nE-mail: ${form.email}\n\n${form.mensagem}`
+      `Nome: ${form.nome}\nE-mail: ${form.email}\n\n${form.mensagem}`,
     );
     window.open(
       `mailto:italofernandesvm@gmail.com?subject=${subject}&body=${body}`,
-      "_blank"
+      "_blank",
     );
     setEnviado(true);
     setForm({ nome: "", email: "", mensagem: "" });
@@ -34,8 +34,8 @@ export function ContactSection() {
           Vamos conversar?
         </h2>
         <p className="text-neutral-500 dark:text-neutral-400 text-sm max-w-xl">
-          Aberto a projetos freelance, colaborações e conversas sobre tecnologia.
-          Respondo em até 48h.
+          Aberto a projetos freelance, colaborações e conversas sobre
+          tecnologia. Respondo em até 48h.
         </p>
       </div>
 
@@ -45,7 +45,9 @@ export function ContactSection() {
           {enviado ? (
             <div className="p-6 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 text-center space-y-2">
               <p className="text-2xl">🌱</p>
-              <p className="font-semibold text-emerald-500">Mensagem enviada!</p>
+              <p className="font-semibold text-emerald-500">
+                Mensagem enviada!
+              </p>
               <p className="text-sm text-neutral-400">
                 Seu cliente de e-mail foi aberto com a mensagem pronta.
               </p>
@@ -104,7 +106,7 @@ export function ContactSection() {
 
               <button
                 type="submit"
-                className="w-full bg-accent hover:bg-accentHover text-white font-semibold py-3 px-4 rounded-xl text-sm flex items-center justify-center gap-2 transition-colors"
+                className="w-full bg-accent hover:bg-accentHover text-white font-semibold py-3 px-4 rounded-xl text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer"
               >
                 <Send className="h-4 w-4" />
                 Enviar via E-mail
@@ -122,7 +124,7 @@ export function ContactSection() {
           <button
             type="button"
             onClick={handleCopyEmail}
-            className="w-full p-4 rounded-2xl border border-lightBorder dark:border-darkBorder bg-lightCard dark:bg-darkCard hover:border-accent transition-all flex items-center gap-3 group text-left"
+            className="w-full p-4 rounded-2xl border border-lightBorder dark:border-darkBorder bg-lightCard dark:bg-darkCard hover:border-accent transition-all flex items-center gap-3 group text-left cursor-pointer"
           >
             <Mail className="h-4 w-4 text-neutral-400 group-hover:text-accent transition-colors" />
             <div>

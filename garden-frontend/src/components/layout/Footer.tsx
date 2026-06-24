@@ -28,7 +28,7 @@ export function Footer() {
           <button
             type="button"
             onClick={handleCopyEmail}
-            className="text-lg font-medium hover:text-accent flex items-center gap-2 group transition-all"
+            className="text-lg font-medium hover:text-accent flex items-center gap-2 group transition-all cursor-pointer"
           >
             <span>italofernandesvm@gmail.com</span>
             <Copy className="h-4 w-4 text-neutral-400 group-hover:text-accent transition-all" />

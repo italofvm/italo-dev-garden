@@ -40,7 +40,7 @@ export function Modal({ isOpen, title, children, onClose }: ModalProps) {
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-6 right-6 p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-all"
+          className="absolute top-6 right-6 p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-all cursor-pointer"
           aria-label="Fechar modal"
         >
           <X className="h-5 w-5 text-neutral-400 hover:text-accent" />

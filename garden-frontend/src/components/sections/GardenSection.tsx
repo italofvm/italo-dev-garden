@@ -64,24 +64,24 @@ export function GardenSection() {
           >
             <div className="space-y-4">
               <div className="flex justify-between items-center text-xs">
-               <span
-                 className={`px-2 py-1 rounded font-mono font-semibold ${statusColors[note.status]}`}
-               >
-                 {statusLabels[note.status]}
-               </span>
-               <span className="text-neutral-400">{note.date}</span>
+                <span
+                  className={`px-2 py-1 rounded font-mono font-semibold ${statusColors[note.status]}`}
+                >
+                  {statusLabels[note.status]}
+                </span>
+                <span className="text-neutral-400">{note.date}</span>
               </div>
 
               <h3 className="text-lg font-bold">{note.title}</h3>
               <p className="text-sm text-neutral-500 dark:text-neutral-400 line-clamp-3">
-               {note.excerpt}
+                {note.excerpt}
               </p>
             </div>
 
             <div className="pt-4 flex items-center justify-between text-xs text-neutral-400">
               <span>Leitura: {note.readTime}</span>
               <span className="text-accent flex items-center gap-1">
-               Ler Nota <ChevronRight className="h-3 w-3" />
+                Ler Nota <ChevronRight className="h-3 w-3" />
               </span>
             </div>
           </article>
@@ -97,9 +97,9 @@ export function GardenSection() {
           <div className="space-y-4">
             <div className="flex items-center gap-2 text-xs">
               <span
-               className={`px-2 py-1 rounded font-mono font-semibold ${statusColors[selectedNote.status]}`}
+                className={`px-2 py-1 rounded font-mono font-semibold ${statusColors[selectedNote.status]}`}
               >
-               {statusLabels[selectedNote.status]}
+                {statusLabels[selectedNote.status]}
               </span>
               <span className="text-neutral-400">{selectedNote.date}</span>
             </div>
@@ -126,10 +126,10 @@ function FilterButton({ isActive, label, onClick }: FilterButtonProps) {
     <button
       type="button"
       onClick={onClick}
-      className={`px-3 py-1.5 rounded-lg border font-medium transition-all ${
+      className={`px-3 py-1.5 rounded-lg border font-medium transition-all cursor-pointer${
         isActive
-          ? "border-accent bg-accent/10 text-accent"
-          : "border-lightBorder dark:border-darkBorder hover:border-neutral-400 text-neutral-400"
+          ? " border-accent bg-accent/10 text-accent"
+          : " border-lightBorder dark:border-darkBorder hover:border-neutral-400 text-neutral-400"
       }`}
     >
       {label}
