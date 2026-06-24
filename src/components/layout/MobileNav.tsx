@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { BookOpen, Compass, Home, Terminal } from "lucide-react";
+import { BookOpen, Briefcase, Compass, Home, Terminal } from "lucide-react";
 import { navItems, type TabId } from "../../types/navigation";
 
 interface MobileNavProps {
@@ -9,9 +9,11 @@ interface MobileNavProps {
 
 const iconMap: Record<TabId, ReactNode> = {
   home: <Home className="h-3.5 w-3.5" />,
+  projects: <Briefcase className="h-3.5 w-3.5" />,
   garden: <BookOpen className="h-3.5 w-3.5" />,
   lab: <Terminal className="h-3.5 w-3.5" />,
   now: <Compass className="h-3.5 w-3.5" />,
+  contact: <Compass className="h-3.5 w-3.5" />,
 };
 
 export function MobileNav({ activeTab, onChangeTab }: MobileNavProps) {

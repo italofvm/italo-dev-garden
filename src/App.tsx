@@ -8,6 +8,7 @@ import {
 import { Header, MobileNav, Footer } from "./components/layout";
 import {
   HomeSection,
+  ProjectsSection,
   GardenSection,
   LabSection,
   NowSection,
@@ -19,9 +20,11 @@ function MainContent() {
 
   const tabComponents: Record<TabId, JSX.Element> = {
     home: <HomeSection />,
+    projects: <ProjectsSection />,
     garden: <GardenSection />,
     lab: <LabSection />,
     now: <NowSection />,
+    contact: <HomeSection />,
   };
 
   return <main className="flex-grow">{tabComponents[activeTab]}</main>;
@@ -60,3 +63,4 @@ function App() {
 }
 
 export default App;
+

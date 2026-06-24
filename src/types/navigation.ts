@@ -1,4 +1,4 @@
-export type TabId = "home" | "garden" | "lab" | "now";
+export type TabId = "home" | "projects" | "garden" | "lab" | "now" | "contact";
 
 export interface NavItem {
   id: TabId;
@@ -7,8 +7,9 @@ export interface NavItem {
 }
 
 export const navItems: NavItem[] = [
-  { id: "home", label: "Home", href: "/" },
-  { id: "garden", label: "Garden", href: "/garden" },
-  { id: "lab", label: "Lab", href: "/lab" },
-  { id: "now", label: "Now", href: "/now" },
+  { id: "home", label: "Início", href: "/" },
+  { id: "projects", label: "Projetos", href: "/projects" },
+  { id: "garden", label: "Jardim", href: "/garden" },
+  { id: "lab", label: "Laboratório", href: "/lab" },
+  { id: "now", label: "Agora", href: "/now" },
 ];
