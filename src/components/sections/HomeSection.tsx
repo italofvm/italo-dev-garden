@@ -5,6 +5,7 @@ const techStack = [
   { name: "React", color: "text-cyan-400" },
   { name: "TypeScript", color: "text-blue-400" },
   { name: "Node.js", color: "text-emerald-400" },
+  { name: "Java", color: "text-red-400" },
   { name: "Tailwind", color: "text-sky-400" },
   { name: "Firebase", color: "text-amber-400" },
   { name: "PostgreSQL", color: "text-indigo-400" },
@@ -23,13 +24,6 @@ export function HomeSection() {
             Sou um Desenvolvedor FullStack focado em interfaces fluidas e
             arquitetura moderna.
           </p>
-        </div>
-
-        {/* Avatar */}
-        <div className="shrink-0">
-          <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-accent to-indigo-400 flex items-center justify-center text-white font-bold text-3xl shadow-lg shadow-accent/20 select-none">
-            I
-          </div>
         </div>
       </div>
 
