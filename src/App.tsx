@@ -12,6 +12,7 @@ import {
   GardenSection,
   LabSection,
   NowSection,
+  ContactSection,
 } from "./components/sections";
 import type { TabId } from "./types/navigation";
 
@@ -24,7 +25,7 @@ function MainContent() {
     garden: <GardenSection />,
     lab: <LabSection />,
     now: <NowSection />,
-    contact: <HomeSection />,
+    contact: <ContactSection />,
   };
 
   return <main className="flex-grow">{tabComponents[activeTab]}</main>;

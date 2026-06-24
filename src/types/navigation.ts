@@ -12,4 +12,5 @@ export const navItems: NavItem[] = [
   { id: "garden", label: "Jardim", href: "/garden" },
   { id: "lab", label: "Laboratório", href: "/lab" },
   { id: "now", label: "Agora", href: "/now" },
+  { id: "contact", label: "Contato", href: "/contact" },
 ];
