@@ -50,7 +50,11 @@ function MainContent() {
     contact: <ContactSection />,
   };
 
-  return <main className="flex-grow" key={activeTab}>{tabComponents[activeTab]}</main>;
+  return (
+    <main className="flex-grow" key={activeTab}>
+      {tabComponents[activeTab]}
+    </main>
+  );
 }
 
 function AppShell() {
@@ -60,7 +64,7 @@ function AppShell() {
   return (
     <div className="min-h-screen bg-lightBg dark:bg-darkBg text-neutral-800 dark:text-neutral-200 font-sans relative overflow-x-hidden selection:bg-accent selection:text-white">
       <MouseGlow />
-      <div className="max-w-4xl mx-auto px-6 py-12 md:py-24 relative z-10 flex flex-col min-h-screen">
+      <div className="max-w-4xl mx-auto px-6 py-8 md:py-12 relative z-10 flex flex-col min-h-screen">
         <Header
           activeTab={activeTab}
           onChangeTab={setActiveTab}
@@ -87,4 +91,3 @@ function App() {
 }
 
 export default App;
-
