@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { Copy, GitBranch, Mail, Send, UserPenIcon } from "lucide-react";
 import { Toast } from "../ui";
+import { createLead } from "../../services/adminApi";
 
 export function ContactSection() {
   const [toastOpen, setToastOpen] = useState(false);
   const [form, setForm] = useState({ nome: "", email: "", mensagem: "" });
   const [enviado, setEnviado] = useState(false);
+  const [enviando, setEnviando] = useState(false);
+  const [erro, setErro] = useState("");
 
   const handleCopyEmail = async () => {
     await navigator.clipboard.writeText("italofernandesvm@gmail.com");
@@ -13,18 +16,24 @@ export function ContactSection() {
     setTimeout(() => setToastOpen(false), 2500);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`Mensagem de ${form.nome}`);
-    const body = encodeURIComponent(
-      `Nome: ${form.nome}\nE-mail: ${form.email}\n\n${form.mensagem}`,
-    );
-    window.open(
-      `mailto:italofernandesvm@gmail.com?subject=${subject}&body=${body}`,
-      "_blank",
-    );
-    setEnviado(true);
-    setForm({ nome: "", email: "", mensagem: "" });
+    setEnviando(true);
+    setErro("");
+
+    try {
+      await createLead(form);
+      setEnviado(true);
+      setForm({ nome: "", email: "", mensagem: "" });
+    } catch (error) {
+      setErro(
+        error instanceof Error
+          ? error.message
+          : "Não foi possível enviar a mensagem.",
+      );
+    } finally {
+      setEnviando(false);
+    }
   };
 
   return (
@@ -106,11 +115,13 @@ export function ContactSection() {
 
               <button
                 type="submit"
+                disabled={enviando}
                 className="w-full bg-accent hover:bg-accentHover text-white font-semibold py-3 px-4 rounded-xl text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer"
               >
                 <Send className="h-4 w-4" />
-                Enviar via E-mail
+                {enviando ? "Enviando..." : "Enviar mensagem"}
               </button>
+              {erro ? <p className="text-xs text-red-500">{erro}</p> : null}
             </form>
           )}
         </div>

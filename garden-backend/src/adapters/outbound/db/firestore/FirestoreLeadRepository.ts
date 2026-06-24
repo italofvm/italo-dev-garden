@@ -19,7 +19,9 @@ function mapLead(docId: string, data: Record<string, unknown>): Lead {
 }
 
 export class FirestoreLeadRepository implements ILeadRepository {
-  private readonly collection = getDb().collection("leads");
+  private get collection() {
+    return getDb().collection("leads");
+  }
 
   async findAll(): Promise<Lead[]> {
     const snapshot = await this.collection.orderBy("createdAt", "desc").get();

@@ -8,7 +8,7 @@ export class ProjectService {
     return this.projectRepository.findAll();
   }
 
-  async getById(id: string): Promise<Project | null> {
+  async getById(id: string): Promise<Project> {
     const project = await this.projectRepository.findById(id);
     if (!project) throw new Error("projeto não encontrado");
     return project;

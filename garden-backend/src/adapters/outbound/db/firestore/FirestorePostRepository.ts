@@ -21,7 +21,9 @@ function mapPost(docId: string, data: Record<string, unknown>): Post {
 }
 
 export class FirestorePostRepository implements IPostRepository {
-  private readonly collection = getDb().collection("posts");
+  private get collection() {
+    return getDb().collection("posts");
+  }
 
   async findAll(): Promise<Post[]> {
     const snapshot = await this.collection.orderBy("createdAt", "desc").get();

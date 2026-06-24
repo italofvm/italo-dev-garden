@@ -23,7 +23,9 @@ function mapProject(docId: string, data: Record<string, unknown>): Project {
 }
 
 export class FirestoreProjectRepository implements IProjectRepository {
-  private readonly collection = getDb().collection("projects");
+  private get collection() {
+    return getDb().collection("projects");
+  }
 
   async findAll(): Promise<Project[]> {
     const snapshot = await this.collection.orderBy("createdAt", "desc").get();

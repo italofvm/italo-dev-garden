@@ -11,7 +11,9 @@ const DEFAULT_CONFIG: SiteConfig = {
 };
 
 export class FirestoreConfigRepository implements IConfigRepository {
-  private readonly collection = getDb().collection("config");
+  private get collection() {
+    return getDb().collection("config");
+  }
   private readonly docId = "site";
 
   async get(): Promise<SiteConfig> {

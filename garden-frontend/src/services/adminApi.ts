@@ -12,38 +12,33 @@ function getAuthToken() {
 
 async function parseError(response: Response) {
   try {
-    const data = (await response.json()) as { message?: string };
-    return data.message ?? "Error Inesperado na API.";
+    const data = (await response.json()) as { message?: string; error?: string };
+    return data.error ?? data.message ?? "Erro inesperado na API.";
   } catch {
-    return "Error Inesperado na API.";
+    return "Erro inesperado na API.";
   }
 }
 
 export async function createProject(project: ProjectFormState) {
-  const formData = new FormData();
-  formData.append("title", project.title);
-  formData.append("description", project.description);
-  formData.append("repositoryUrl", project.repositoryUrl);
-  formData.append("deployUrl", project.deployUrl);
-  formData.append("status", project.status);
-  formData.append(
-    "technologies",
-    JSON.stringify(
-      project.technologies
-        .split(",")
-        .map((t) => t.trim())
-        .filter(Boolean),
-    ),
-  );
-
-  if (project.image) formData.append("image", project.image);
+  const technologies = project.technologies
+    .split(",")
+    .map((t) => t.trim())
+    .filter(Boolean);
 
   const response = await fetch(`${API_URL}/api/projects`, {
     method: "POST",
     headers: {
+      "Content-Type": "application/json",
       Authorization: `Bearer ${getAuthToken()}`,
     },
-    body: formData,
+    body: JSON.stringify({
+      title: project.title,
+      description: project.description,
+      repositoryUrl: project.repositoryUrl,
+      deployUrl: project.deployUrl || undefined,
+      status: project.status,
+      technologies,
+    }),
   });
 
   if (!response.ok) throw new Error(await parseError(response));
@@ -68,13 +63,29 @@ export async function createPost(post: BlogFormState) {
 }
 
 export async function updateHomeConfig(config: HomeFormState) {
-  const response = await fetch(`${API_URL}/api/home-config`, {
+  const response = await fetch(`${API_URL}/api/config`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${getAuthToken()}`,
     },
     body: JSON.stringify(config),
+  });
+
+  if (!response.ok) throw new Error(await parseError(response));
+}
+
+export async function createLead(input: {
+  nome: string;
+  email: string;
+  mensagem: string;
+}) {
+  const response = await fetch(`${API_URL}/api/leads`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(input),
   });
 
   if (!response.ok) throw new Error(await parseError(response));
