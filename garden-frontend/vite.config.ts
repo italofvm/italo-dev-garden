@@ -7,15 +7,6 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   build: {
     target: "esnext",
-    minify: "esbuild",
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          "react-vendor": ["react", "react-dom"],
-          "socket-vendor": ["socket.io-client"],
-        },
-      },
-    },
   },
   test: {
     environment: "jsdom",
