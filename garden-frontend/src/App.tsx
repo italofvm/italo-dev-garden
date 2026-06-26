@@ -1,4 +1,5 @@
 import type { JSX } from "react/jsx-runtime";
+import { lazy, Suspense, useEffect } from "react";
 import "./styles/markdown.css";
 import {
   ThemeProvider,
@@ -41,6 +42,16 @@ function MouseGlow() {
   );
 }
 
+// Loading placeholder
+function SectionSkeleton() {
+  return (
+    <div className="animate-pulse space-y-4">
+      <div className="h-12 bg-neutral-200 dark:bg-neutral-800 rounded" />
+      <div className="h-6 bg-neutral-200 dark:bg-neutral-800 rounded w-3/4" />
+    </div>
+  );
+}
+
 function MainContent() {
   const { activeTab } = useNavigation();
   const { projects, notes, config, refetch } = usePublicContent();
@@ -59,7 +70,9 @@ function MainContent() {
 
   return (
     <main className="flex-grow pb-24 sm:pb-0" key={activeTab}>
-      {tabComponents[activeTab]}
+      <Suspense fallback={<SectionSkeleton />}>
+        {tabComponents[activeTab]}
+      </Suspense>
     </main>
   );
 }
@@ -87,7 +100,37 @@ function AppShell() {
   );
 }
 
+/**
+ * Injeta Schema JSON-LD no head para SEO estruturado
+ */
+function useSchemaMarkup() {
+  useEffect(() => {
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      name: "Italo Dev",
+      url: "https://italodevgarden.vercel.app",
+      description: "Full Stack Developer | React | TypeScript | Node.js",
+      jobTitle: "Full Stack Developer",
+      sameAs: [
+        "https://github.com/italofvm",
+      ],
+    };
+
+    const scriptTag = document.createElement("script");
+    scriptTag.type = "application/ld+json";
+    scriptTag.textContent = JSON.stringify(schema);
+    document.head.appendChild(scriptTag);
+
+    return () => {
+      scriptTag.remove();
+    };
+  }, []);
+}
+
 function App() {
+  useSchemaMarkup();
+
   return (
     <ThemeProvider>
       <NavigationProvider>

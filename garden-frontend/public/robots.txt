@@ -1,0 +1,14 @@
+# Robots.txt - SEO Crawler Rules
+
+# Allow all bots
+User-agent: *
+Allow: /
+
+# Disallow admin routes
+Disallow: /admin/
+
+# Sitemap
+Sitemap: https://italodevgarden.vercel.app/sitemap.xml
+
+# Crawl delay (in seconds)
+Crawl-delay: 1

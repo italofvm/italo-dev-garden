@@ -1,6 +1,7 @@
 import express from "express";
 import "dotenv/config";
 import cors from "cors";
+import compression from "compression";
 import { createServer } from "http";
 import { Server as SocketIOServer } from "socket.io";
 import { buildRoutes } from "./adapters/inbound/http/routes";
@@ -30,6 +31,9 @@ const corsOriginDelegate = (
   }
   callback(new Error("Origin não permitida pelo CORS"));
 };
+
+// Compressão gzip para melhorar performance
+app.use(compression());
 
 app.use(
   cors({
