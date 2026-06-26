@@ -1,4 +1,5 @@
-import { navItems, type TabId } from "../../types/navigation";
+import { Home, Briefcase, BookOpen, Terminal, Compass, Mail } from "lucide-react";
+import { type TabId } from "../../types/navigation";
 
 interface MobileNavProps {
   activeTab: TabId;
@@ -6,24 +7,31 @@ interface MobileNavProps {
 }
 
 export function MobileNav({ activeTab, onChangeTab }: MobileNavProps) {
+  const navItems = [
+    { id: "home" as const, icon: Home, label: "Home" },
+    { id: "projects" as const, icon: Briefcase, label: "Projects" },
+    { id: "garden" as const, icon: BookOpen, label: "Garden" },
+    { id: "lab" as const, icon: Terminal, label: "Lab" },
+    { id: "now" as const, icon: Compass, label: "Now" },
+    { id: "contact" as const, icon: Mail, label: "Contact" },
+  ];
+
   return (
-    <nav className="sm:hidden fixed bottom-0 left-0 right-0 bg-lightCard dark:bg-darkCard border-t border-lightBorder dark:border-darkBorder">
-      <div className="flex justify-around items-center">
-        {navItems.map((item) => (
-          <button
-            key={item.id}
-            type="button"
-            onClick={() => onChangeTab(item.id)}
-            className={`flex-1 py-3 text-xs font-medium text-center transition-all cursor-pointer ${
-              activeTab === item.id
-                ? "text-accent border-t-2 border-accent"
-                : "text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-100"
-            }`}
-          >
-            {item.label}
-          </button>
-        ))}
-      </div>
+    <nav className="sm:hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-neutral-100/90 dark:bg-neutral-900/90 backdrop-blur-md p-1.5 rounded-full border border-lightBorder dark:border-darkBorder flex gap-1 z-50 shadow-lg">
+      {navItems.map(({ id, icon: Icon }) => (
+        <button
+          key={id}
+          type="button"
+          onClick={() => onChangeTab(id)}
+          className={`px-4 py-2 rounded-full text-xs font-medium flex flex-col items-center gap-1 transition-all ${
+            activeTab === id
+              ? "bg-accent text-white shadow-md"
+              : "text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200"
+          }`}
+        >
+          <Icon className="h-3.5 w-3.5" />
+        </button>
+      ))}
     </nav>
   );
 }

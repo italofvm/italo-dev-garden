@@ -22,105 +22,146 @@ export default {
           css: {
             // Spacing melhorado
             'p': {
-              marginTop: '1.25rem',
-              marginBottom: '1.25rem',
-              lineHeight: '1.75',
+              marginTop: '1rem',
+              marginBottom: '1rem',
+              lineHeight: '1.6',
             },
-            'h1, h2, h3, h4, h5, h6': {
+            // Headings com separator estilo GitHub
+            'h1': {
+              fontSize: '2rem',
+              fontWeight: '600',
               marginTop: '2rem',
-              marginBottom: '1.25rem',
-              fontWeight: '700',
+              marginBottom: '1rem',
+              paddingBottom: '0.5rem',
+              borderBottomWidth: '1px',
+              borderBottomColor: theme('colors.darkBorder'),
             },
-            'h1': { fontSize: '2.25rem' },
-            'h2': { fontSize: '1.875rem' },
-            'h3': { fontSize: '1.5rem' },
-            'h4': { fontSize: '1.25rem' },
-            // Listas com espaçamento
-            'ul, ol': {
+            'h2': {
+              fontSize: '1.5rem',
+              fontWeight: '600',
+              marginTop: '1.5rem',
+              marginBottom: '1rem',
+              paddingBottom: '0.3rem',
+              borderBottomWidth: '1px',
+              borderBottomColor: theme('colors.darkBorder'),
+            },
+            'h3': {
+              fontSize: '1.25rem',
+              fontWeight: '600',
               marginTop: '1.25rem',
-              marginBottom: '1.25rem',
-              paddingLeft: '1.75rem',
+              marginBottom: '0.75rem',
             },
-            'li': {
-              marginTop: '0.5rem',
+            'h4': {
+              fontSize: '1rem',
+              fontWeight: '600',
+              marginTop: '1rem',
               marginBottom: '0.5rem',
             },
-            // Blockquotes melhoradas
+            // Listas com espaçamento
+            'ul, ol': {
+              marginTop: '1rem',
+              marginBottom: '1rem',
+              paddingLeft: '2rem',
+            },
+            'li': {
+              marginTop: '0.25rem',
+              marginBottom: '0.25rem',
+              lineHeight: '1.5',
+            },
+            // Blockquotes estilo GitHub
             'blockquote': {
-              marginTop: '1.5rem',
-              marginBottom: '1.5rem',
+              marginTop: '1rem',
+              marginBottom: '1rem',
               paddingLeft: '1rem',
               borderLeftWidth: '4px',
               borderLeftColor: theme('colors.accent'),
               fontStyle: 'italic',
+              color: theme('colors.neutral.400'),
             },
-            // CODE BLOCKS: o melhor parte!
+            // CODE BLOCKS - estilo GitHub
             'pre': {
-              backgroundColor: '#0f172a',
-              borderRadius: '0.75rem',
-              padding: '1.5rem',
-              marginTop: '1.5rem',
-              marginBottom: '1.5rem',
+              backgroundColor: '#0d1117',
+              color: '#c9d1d9',
+              borderRadius: '0.5rem',
+              padding: '1rem',
+              marginTop: '1rem',
+              marginBottom: '1rem',
               border: `1px solid ${theme('colors.darkBorder')}`,
               overflow: 'auto',
-              lineHeight: '1.5',
+              lineHeight: '1.45',
+              // CRUCIAL: quebra de linha!
+              whiteSpace: 'pre-wrap',
+              wordWrap: 'break-word',
+              overflowWrap: 'break-word',
+              wordBreak: 'break-all',
             },
             'code': {
               fontFamily: theme('fontFamily.mono').join(', '),
-              fontSize: '0.875em',
+              fontSize: '0.85em',
               fontWeight: '500',
             },
-            // Code inline (sem highlight, só marcado)
+            // Code inline (sem highlight)
             'code:not(pre code)': {
-              backgroundColor: theme('colors.darkCard'),
-              color: theme('colors.accent'),
-              padding: '0.25rem 0.5rem',
+              backgroundColor: '#161b22',
+              color: '#79c0ff',
+              padding: '0.25em 0.5em',
               borderRadius: '0.375rem',
-              fontSize: '0.875em',
+              fontSize: '0.85em',
               border: `1px solid ${theme('colors.darkBorder')}`,
+              fontWeight: '500',
             },
             // Links com acento
             'a': {
               color: theme('colors.accent'),
-              textDecoration: 'underline',
-              transition: 'color 0.2s',
+              textDecoration: 'none',
+              borderBottomWidth: '1px',
+              borderBottomColor: 'transparent',
+              transition: 'all 0.2s',
               '&:hover': {
+                textDecoration: 'underline',
                 color: theme('colors.accentHover'),
               },
             },
             // Imagens responsivas
             'img': {
-              borderRadius: '0.75rem',
+              borderRadius: '0.5rem',
               maxWidth: '100%',
               height: 'auto',
-              marginTop: '1.5rem',
-              marginBottom: '1.5rem',
+              marginTop: '1rem',
+              marginBottom: '1rem',
+              border: `1px solid ${theme('colors.darkBorder')}`,
             },
             // Table styling
             'table': {
-              marginTop: '1.5rem',
-              marginBottom: '1.5rem',
+              marginTop: '1rem',
+              marginBottom: '1rem',
               borderCollapse: 'collapse',
+              width: '100%',
             },
             'th, td': {
               padding: '0.75rem',
-              borderBottom: `1px solid ${theme('colors.darkBorder')}`,
+              borderBottomWidth: '1px',
+              borderBottomColor: theme('colors.darkBorder'),
               textAlign: 'left',
             },
             'thead': {
-              backgroundColor: theme('colors.darkCard'),
+              backgroundColor: '#161b22',
+              fontWeight: '600',
+            },
+            'tbody tr:nth-child(even)': {
+              backgroundColor: '#0d1117',
             },
           },
         },
         invert: {
           css: {
-            '--tw-prose-body': theme('colors.neutral.300'),
-            '--tw-prose-headings': theme('colors.neutral.100'),
+            '--tw-prose-body': '#c9d1d9',
+            '--tw-prose-headings': '#ffffff',
             '--tw-prose-links': theme('colors.accent'),
-            '--tw-prose-bold': theme('colors.neutral.100'),
-            '--tw-prose-code': theme('colors.accent'),
-            '--tw-prose-pre-bg': '#0f172a',
-            '--tw-prose-pre-code': theme('colors.neutral.300'),
+            '--tw-prose-bold': '#ffffff',
+            '--tw-prose-code': '#79c0ff',
+            '--tw-prose-pre-bg': '#0d1117',
+            '--tw-prose-pre-code': '#c9d1d9',
           },
         },
       }),

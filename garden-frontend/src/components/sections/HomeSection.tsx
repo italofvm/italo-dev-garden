@@ -18,7 +18,7 @@ interface HomeSectionProps {
 }
 
 export function HomeSection({ projects, config }: HomeSectionProps) {
-  const recentProjects = projects.slice(0, 3);
+  const recentProjects = projects.slice(0, 2);
   return (
     <section className="space-y-12 page-transition">
       <div className="flex flex-col-reverse md:flex-row items-start justify-between gap-8">

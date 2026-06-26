@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { ChevronRight } from "lucide-react";
 import { Modal } from "../ui";
 import { useMarkdownContent } from "../../hooks/useMarkdownContent";
+import { useCleanMarkdown } from "../../hooks/useCleanMarkdown";
 import {
   statusColors,
   statusLabels,
@@ -83,7 +84,7 @@ export function GardenSection({ notes }: GardenSectionProps) {
 
                 <h3 className="text-lg font-bold">{note.title}</h3>
                 <p className="text-sm text-neutral-500 dark:text-neutral-400 line-clamp-3">
-                  {note.excerpt}
+                  {useCleanMarkdown(note.excerpt)}
                 </p>
               </div>
 
@@ -133,7 +134,7 @@ function ModalContent({ note }: { note: Note }) {
 
       {/* Markdown renderizado com DOMPurify (XSS-safe) */}
       <div
-        className="prose dark:prose-invert max-w-none dark:text-neutral-300 border-t border-lightBorder dark:border-darkBorder pt-8 mt-6"
+        className="markdown-content border-t border-lightBorder dark:border-darkBorder pt-8 mt-6"
         dangerouslySetInnerHTML={{ __html: htmlContent }}
       />
     </div>

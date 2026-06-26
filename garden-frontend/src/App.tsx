@@ -1,11 +1,12 @@
 import type { JSX } from "react/jsx-runtime";
+import "./styles/markdown.css";
 import {
   ThemeProvider,
   NavigationProvider,
   useNavigation,
   useTheme,
 } from "./app/providers";
-import { Header, MobileNav, Footer } from "./components/layout";
+import { Header, Footer, MobileNav } from "./components/layout";
 import {
   HomeSection,
   ProjectsSection,
@@ -53,7 +54,7 @@ function MainContent() {
   };
 
   return (
-    <main className="flex-grow" key={activeTab}>
+    <main className="flex-grow pb-24 sm:pb-0" key={activeTab}>
       {tabComponents[activeTab]}
     </main>
   );
