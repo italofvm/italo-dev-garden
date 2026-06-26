@@ -7,19 +7,10 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   build: {
     target: "esnext",
-    minify: "terser",
-    terserOptions: {
-      compress: {
-        drop_console: process.env.NODE_ENV === "production",
-      },
-      format: {
-        comments: false,
-      },
-    },
+    minify: "esbuild",
     rollupOptions: {
       output: {
         manualChunks: {
-          // Vendors
           "react-vendor": ["react", "react-dom"],
           "socket-vendor": ["socket.io-client"],
         },
