@@ -1,9 +1,10 @@
 import type { NextFunction, Request, Response } from "express";
-import * as admin from "firebase-admin";
+import type { DecodedIdToken } from "firebase-admin/auth";
+import { getAuth } from "firebase-admin/auth";
 import { getDb } from "../../../../config/firebase";
 
 export interface AuthenticatedRequest extends Request {
-  user?: admin.auth.DecodedIdToken;
+  user?: DecodedIdToken;
 }
 
 export async function authMiddleware(
@@ -24,7 +25,7 @@ export async function authMiddleware(
     // Garante app Firebase inicializado antes de validar token
     getDb();
 
-    const decoded = await admin.auth().verifyIdToken(token);
+    const decoded = await getAuth().verifyIdToken(token);
     req.user = decoded;
     next();
   } catch {

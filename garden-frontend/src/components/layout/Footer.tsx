@@ -56,7 +56,13 @@ export function Footer() {
         </div>
       </footer>
 
-      <Toast open={toastOpen} message="E-mail copiado com sucesso!" />
+      {toastOpen && (
+        <Toast
+          message="E-mail copiado com sucesso!"
+          type="success"
+          onClose={() => setToastOpen(false)}
+        />
+      )}
     </>
   );
 }

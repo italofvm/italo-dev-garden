@@ -1,49 +1,55 @@
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { describe, it, expect } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { ProjectsSection } from "../components/sections/ProjectsSection";
+import type { AdminProject } from "../types/admin";
 
-// Mock do react-router-dom para evitar contexto de rota
-vi.mock("react-router-dom", () => ({
-  useNavigate: () => vi.fn(),
-}));
+const projectsMock: AdminProject[] = [
+  {
+    id: "1",
+    title: "Projeto Concluído",
+    description: "Descrição concluído",
+    repositoryUrl: "https://github.com/example/a",
+    status: "concluido",
+    technologies: ["React", "TypeScript"],
+    imageUrl: "https://images.example.com/project-a.png",
+  },
+  {
+    id: "2",
+    title: "Projeto em Andamento",
+    description: "Descrição andamento",
+    repositoryUrl: "https://github.com/example/b",
+    status: "andamento",
+    technologies: ["Node.js"],
+  },
+];
 
 describe("ProjectsSection", () => {
-  it("renderiza o título da seção", () => {
-    render(<ProjectsSection />);
-    expect(screen.getByText("Projetos")).toBeInTheDocument();
+  it("renders project cards and fallback image placeholder", () => {
+    render(<ProjectsSection projects={projectsMock} />);
+
+    expect(screen.getByText("Projeto Concluído")).toBeInTheDocument();
+    expect(screen.getByText("Projeto em Andamento")).toBeInTheDocument();
+    expect(
+      screen.getByAltText("Preview do projeto Projeto Concluído"),
+    ).toBeInTheDocument();
+    expect(screen.getByText("sem imagem")).toBeInTheDocument();
   });
 
-  it("exibe todos os projetos por padrão (filtro 'Todos')", () => {
-    render(<ProjectsSection />);
-    // Botão Todos deve estar presente
-    expect(screen.getByRole("button", { name: "Todos" })).toBeInTheDocument();
+  it("filters projects by status", () => {
+    render(<ProjectsSection projects={projectsMock} />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Em Andamento" }));
+
+    expect(screen.getByText("Projeto em Andamento")).toBeInTheDocument();
+    expect(screen.queryByText("Projeto Concluído")).not.toBeInTheDocument();
   });
 
-  it("filtra projetos ao clicar em 'Concluídos'", async () => {
-    const user = userEvent.setup();
-    render(<ProjectsSection />);
+  it("shows empty state when no project matches filter", () => {
+    render(<ProjectsSection projects={projectsMock} />);
 
-    await user.click(screen.getByRole("button", { name: "Concluídos" }));
-
-    // Badge "Em Andamento" dos cards de projeto não deve aparecer
-    // (os botões de filtro continuam visíveis — checamos só os badges via role)
-    const badges = screen.queryAllByText("Em Andamento");
-    // Só o botão de filtro pode existir, não um badge de card
-    badges.forEach((el) => {
-      expect(el.tagName).toBe("BUTTON");
-    });
-  });
-
-  it("exibe mensagem quando nenhum projeto se encaixa no filtro", async () => {
-    const user = userEvent.setup();
-    render(<ProjectsSection />);
-
-    // Clica em 'Em Andamento' (não há projetos nessa categoria nos dados mock)
-    await user.click(screen.getByRole("button", { name: "Em Andamento" }));
+    fireEvent.click(screen.getByRole("button", { name: "Experimentos" }));
 
     expect(
-      screen.queryByText(/Nenhum projeto nessa categoria/i)
+      screen.getByText("Nenhum projeto nessa categoria ainda. 🌱"),
     ).toBeInTheDocument();
   });
 });

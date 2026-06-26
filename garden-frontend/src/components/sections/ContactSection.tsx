@@ -49,7 +49,6 @@ export function ContactSection() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
-        {/* Formulário */}
         <div className="md:col-span-3">
           {enviado ? (
             <div className="p-6 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 text-center space-y-2">
@@ -58,9 +57,10 @@ export function ContactSection() {
                 Mensagem enviada!
               </p>
               <p className="text-sm text-neutral-400">
-                Seu cliente de e-mail foi aberto com a mensagem pronta.
+                Sua mensagem foi recebida e responderei em breve.
               </p>
               <button
+                type="button"
                 onClick={() => setEnviado(false)}
                 className="text-xs text-neutral-400 hover:text-accent transition-colors mt-2"
               >
@@ -126,7 +126,6 @@ export function ContactSection() {
           )}
         </div>
 
-        {/* Links rápidos */}
         <div className="md:col-span-2 space-y-4">
           <p className="text-xs font-mono text-neutral-400 uppercase tracking-wider">
             Contato direto
@@ -175,7 +174,13 @@ export function ContactSection() {
         </div>
       </div>
 
-      <Toast open={toastOpen} message="E-mail copiado!" />
+      {toastOpen && (
+        <Toast
+          message="E-mail copiado!"
+          type="info"
+          onClose={() => setToastOpen(false)}
+        />
+      )}
     </section>
   );
 }

@@ -1,41 +1,45 @@
-import { renderHook, act } from "@testing-library/react";
-import { describe, it, expect, beforeEach } from "vitest";
+import { act, renderHook } from "@testing-library/react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 
 describe("useLocalStorage", () => {
   beforeEach(() => {
-    localStorage.clear();
+    window.localStorage.clear();
   });
 
-  it("retorna o valor inicial quando a chave não existe", () => {
-    const { result } = renderHook(() => useLocalStorage("tema", "dark"));
-    expect(result.current[0]).toBe("dark");
+  it("uses initial value when localStorage is empty", () => {
+    const { result } = renderHook(() => useLocalStorage("test-key", "initial"));
+    expect(result.current[0]).toBe("initial");
   });
 
-  it("persiste o valor no localStorage ao setar", () => {
-    const { result } = renderHook(() => useLocalStorage("tema", "dark"));
+  it("loads value from localStorage when available", () => {
+    window.localStorage.setItem("test-key", JSON.stringify("persisted"));
+    const { result } = renderHook(() => useLocalStorage("test-key", "initial"));
+    expect(result.current[0]).toBe("persisted");
+  });
+
+  it("updates state and localStorage", () => {
+    const { result } = renderHook(() => useLocalStorage("test-key", "initial"));
 
     act(() => {
-      result.current[1]("light");
+      result.current[1]("updated");
     });
 
-    expect(result.current[0]).toBe("light");
-    expect(localStorage.getItem("tema")).toBe('"light"');
+    expect(result.current[0]).toBe("updated");
+    expect(window.localStorage.getItem("test-key")).toBe(
+      JSON.stringify("updated"),
+    );
   });
 
-  it("recupera valor já existente no localStorage", () => {
-    localStorage.setItem("tema", '"light"');
-    const { result } = renderHook(() => useLocalStorage("tema", "dark"));
-    expect(result.current[0]).toBe("light");
-  });
-
-  it("aceita função atualizadora como valor", () => {
-    const { result } = renderHook(() => useLocalStorage("contador", 0));
+  it("supports functional updates", () => {
+    const { result } = renderHook(() => useLocalStorage("test-key", "initial"));
 
     act(() => {
-      result.current[1]((prev) => prev + 1);
+      result.current[1]((prev) => `${prev}-fn`);
     });
 
-    expect(result.current[0]).toBe(1);
+    expect(result.current[0]).toBe("initial-fn");
+    expect(window.localStorage.getItem("test-key")).toBe(
+      JSON.stringify("initial-fn"),
+    );
   });
 });

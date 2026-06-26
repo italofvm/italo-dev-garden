@@ -1,20 +1,29 @@
-import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { Toast } from "../components/ui/Toast";
 
 describe("Toast", () => {
-  it("não renderiza nada quando open=false", () => {
-    const { container } = render(<Toast open={false} message="Copiado!" />);
-    expect(container.firstChild).toBeNull();
+  it("renders message", () => {
+    render(<Toast message="Operação concluída" onClose={() => {}} />);
+    expect(screen.getByText("Operação concluída")).toBeInTheDocument();
   });
 
-  it("renderiza a mensagem quando open=true", () => {
-    render(<Toast open={true} message="E-mail copiado!" />);
-    expect(screen.getByText("E-mail copiado!")).toBeInTheDocument();
+  it("calls onClose when close button is clicked", () => {
+    const onClose = vi.fn();
+    render(<Toast message="Fechar teste" onClose={onClose} />);
+
+    const button = screen.getByRole("button");
+    fireEvent.click(button);
+
+    expect(onClose).toHaveBeenCalledTimes(1);
   });
 
-  it("tem role=alert para acessibilidade", () => {
-    render(<Toast open={true} message="Copiado!" />);
-    expect(screen.getByRole("alert")).toBeInTheDocument();
+  it("applies classes according to toast type", () => {
+    const { rerender } = render(
+      <Toast message="OK" type="success" onClose={() => {}} />,
+    );
+    expect(screen.getByText("OK").parentElement).toHaveClass("bg-green-100");
+
+    rerender(<Toast message="Erro" type="error" onClose={() => {}} />);
+    expect(screen.getByText("Erro").parentElement).toHaveClass("bg-red-100");
   });
 });

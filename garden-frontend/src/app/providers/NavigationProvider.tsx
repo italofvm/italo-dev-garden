@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
-import { type TabId } from "../../types/navigation";
+import { navItems, type TabId } from "../../types/navigation";
 
 interface NavigationContextType {
   activeTab: TabId;
@@ -11,7 +11,25 @@ const NavigationContext = createContext<NavigationContextType | undefined>(
 );
 
 export function NavigationProvider({ children }: { children: ReactNode }) {
-  const [activeTab, setActiveTab] = useState<TabId>("home");
+  const [activeTab, setActiveTabState] = useState<TabId>(() => {
+    try {
+      const saved = window.localStorage.getItem("active_tab");
+      const isValidTab = navItems.some((item) => item.id === saved);
+      return isValidTab ? (saved as TabId) : "home";
+    } catch (error) {
+      console.error(error);
+      return "home";
+    }
+  });
+
+  const setActiveTab = (tab: TabId) => {
+    setActiveTabState(tab);
+    try {
+      window.localStorage.setItem("active_tab", tab);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <NavigationContext.Provider value={{ activeTab, setActiveTab }}>

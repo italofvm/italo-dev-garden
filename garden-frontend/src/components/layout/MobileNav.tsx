@@ -1,5 +1,3 @@
-import type { ReactNode } from "react";
-import { BookOpen, Briefcase, Compass, Home, Mail, Terminal } from "lucide-react";
 import { navItems, type TabId } from "../../types/navigation";
 
 interface MobileNavProps {
@@ -7,32 +5,25 @@ interface MobileNavProps {
   onChangeTab: (tab: TabId) => void;
 }
 
-const iconMap: Record<TabId, ReactNode> = {
-  home: <Home className="h-3.5 w-3.5" />,
-  projects: <Briefcase className="h-3.5 w-3.5" />,
-  garden: <BookOpen className="h-3.5 w-3.5" />,
-  lab: <Terminal className="h-3.5 w-3.5" />,
-  now: <Compass className="h-3.5 w-3.5" />,
-  contact: <Mail className="h-3.5 w-3.5" />,
-};
-
 export function MobileNav({ activeTab, onChangeTab }: MobileNavProps) {
   return (
-    <nav className="sm:hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-neutral-100/90 dark:bg-neutral-900/90 backdrop-blur-md p-1.5 rounded-full border border-lightBorder dark:border-darkBorder flex gap-1 z-50 shadow-lg">
-      {navItems.map((item) => (
-        <button
-          key={item.id}
-          type="button"
-          onClick={() => onChangeTab(item.id)}
-          className={`px-4 py-2 rounded-full text-xs font-medium flex flex-col items-center gap-1 transition-all ${
-            activeTab === item.id
-              ? "bg-neutral-200/50 dark:bg-neutral-800/50 text-accent"
-              : "text-neutral-400"
-          }`}
-        >
-          {iconMap[item.id]}
-        </button>
-      ))}
+    <nav className="sm:hidden fixed bottom-0 left-0 right-0 bg-lightCard dark:bg-darkCard border-t border-lightBorder dark:border-darkBorder">
+      <div className="flex justify-around items-center">
+        {navItems.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            onClick={() => onChangeTab(item.id)}
+            className={`flex-1 py-3 text-xs font-medium text-center transition-all cursor-pointer ${
+              activeTab === item.id
+                ? "text-accent border-t-2 border-accent"
+                : "text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-100"
+            }`}
+          >
+            {item.label}
+          </button>
+        ))}
+      </div>
     </nav>
   );
 }

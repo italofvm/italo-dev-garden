@@ -1,28 +1,32 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
 import { StatusCard } from "../components/ui/StatusCard";
 
 describe("StatusCard", () => {
-  it("renderiza o título corretamente", () => {
-    render(<StatusCard icon={<span>🌱</span>} title="Atividade Atual" />);
-    expect(screen.getByText("Atividade Atual")).toBeInTheDocument();
-  });
-
-  it("renderiza a descrição quando fornecida", () => {
+  it("renders title, description and icon", () => {
     render(
       <StatusCard
-        icon={<span>📍</span>}
-        title="Localização"
-        description="Luziânia/GO, Brasil"
-      />
+        icon={<span data-testid="status-icon">i</span>}
+        title="Atividade Atual"
+        description="Construindo funcionalidades"
+      />,
     );
-    expect(screen.getByText("Luziânia/GO, Brasil")).toBeInTheDocument();
+
+    expect(screen.getByText("Atividade Atual")).toBeInTheDocument();
+    expect(screen.getByText("Construindo funcionalidades")).toBeInTheDocument();
+    expect(screen.getByTestId("status-icon")).toBeInTheDocument();
   });
 
-  it("não quebra sem descrição", () => {
-    const { container } = render(
-      <StatusCard icon={<span>🌱</span>} title="Sem descrição" />
+  it("applies custom icon className", () => {
+    render(
+      <StatusCard
+        icon={<span>i</span>}
+        title="Localização"
+        iconClassName="bg-red-500 text-white"
+      />,
     );
-    expect(container).toBeTruthy();
+
+    const iconWrapper = screen.getByText("i").parentElement;
+    expect(iconWrapper).toHaveClass("bg-red-500");
+    expect(iconWrapper).toHaveClass("text-white");
   });
 });

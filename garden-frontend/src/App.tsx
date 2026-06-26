@@ -16,6 +16,7 @@ import {
 } from "./components/sections";
 import type { TabId } from "./types/navigation";
 import { useMouseGlow } from "./hooks/useMouseGlow";
+import { usePublicContent } from "./hooks/usePublicContent";
 
 function MouseGlow() {
   const { position } = useMouseGlow();
@@ -40,11 +41,12 @@ function MouseGlow() {
 
 function MainContent() {
   const { activeTab } = useNavigation();
+  const { projects, notes, config } = usePublicContent();
 
   const tabComponents: Record<TabId, JSX.Element> = {
-    home: <HomeSection />,
-    projects: <ProjectsSection />,
-    garden: <GardenSection />,
+    home: <HomeSection projects={projects} config={config} />,
+    projects: <ProjectsSection projects={projects} />,
+    garden: <GardenSection notes={notes} />,
     lab: <LabSection />,
     now: <NowSection />,
     contact: <ContactSection />,

@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { ExternalLink, GitBranch } from "lucide-react";
-import { projects } from "../../data/projects";
+import type { AdminProject } from "../../types/admin";
 import {
   statusColors,
   statusLabels,
   type ProjectStatus,
 } from "../../types/projects";
+
+interface ProjectsSectionProps {
+  projects: AdminProject[];
+}
 
 type Filter = "todos" | ProjectStatus;
 
@@ -16,7 +20,7 @@ const filters: { id: Filter; label: string }[] = [
   { id: "experimento", label: "Experimentos" },
 ];
 
-export function ProjectsSection() {
+export function ProjectsSection({ projects }: ProjectsSectionProps) {
   const [activeFilter, setActiveFilter] = useState<Filter>("todos");
 
   const filtered =
@@ -36,7 +40,6 @@ export function ProjectsSection() {
         </p>
       </div>
 
-      {/* Filtros */}
       <div className="flex flex-wrap gap-2">
         {filters.map((f) => (
           <button
@@ -65,14 +68,31 @@ export function ProjectsSection() {
               key={project.id}
               className="group rounded-2xl border border-lightBorder dark:border-darkBorder bg-lightCard dark:bg-darkCard p-6 flex flex-col gap-4 hover:border-accent dark:hover:border-accent transition-all duration-300"
             >
+              {project.imageUrl ? (
+                <div className="w-full aspect-video overflow-hidden rounded-xl border border-lightBorder dark:border-darkBorder">
+                  <img
+                    src={project.imageUrl}
+                    alt={`Preview do projeto ${project.title}`}
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              ) : (
+                <div className="w-full aspect-video rounded-xl border border-dashed border-lightBorder dark:border-darkBorder bg-neutral-100/60 dark:bg-neutral-900/30 flex items-center justify-center">
+                  <span className="text-xs font-mono text-neutral-400">
+                    sem imagem
+                  </span>
+                </div>
+              )}
+
               <div className="flex items-start justify-between gap-4">
                 <h3 className="text-lg font-bold group-hover:text-accent transition-colors">
                   {project.title}
                 </h3>
                 <span
-                  className={`shrink-0 px-2 py-0.5 rounded-full border text-[10px] font-mono font-bold uppercase tracking-wider ${statusColors[project.status]}`}
+                  className={`shrink-0 px-2 py-0.5 rounded-full border text-[10px] font-mono font-bold uppercase tracking-wider ${statusColors[project.status as ProjectStatus]}`}
                 >
-                  {statusLabels[project.status]}
+                  {statusLabels[project.status as ProjectStatus]}
                 </span>
               </div>
 

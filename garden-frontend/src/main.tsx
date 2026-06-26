@@ -3,7 +3,11 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./index.css";
 import App from "./App.tsx";
-import { AdminDashboard } from "./features/admin";
+import {
+  AdminDashboard,
+  AdminLogin,
+  AdminProtectedRoute,
+} from "./features/admin";
 import { NotFound } from "./pages/NotFound";
 
 createRoot(document.getElementById("root")!).render(
@@ -11,7 +15,15 @@ createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route
+          path="/admin"
+          element={
+            <AdminProtectedRoute>
+              <AdminDashboard />
+            </AdminProtectedRoute>
+          }
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
