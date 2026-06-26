@@ -6,29 +6,22 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   build: {
-    // Otimizações de performance
     target: "esnext",
     minify: "terser",
     terserOptions: {
       compress: {
-        drop_console: true,
+        drop_console: process.env.NODE_ENV === "production",
+      },
+      format: {
+        comments: false,
       },
     },
     rollupOptions: {
       output: {
-        // Estratégia de code splitting
         manualChunks: {
           // Vendors
-          react: ["react", "react-dom"],
-          socketio: ["socket.io-client"],
-          // Componentes grandes
-          sections: [
-            "./src/components/sections/HomeSection.tsx",
-            "./src/components/sections/ProjectsSection.tsx",
-            "./src/components/sections/GardenSection.tsx",
-            "./src/components/sections/LabSection.tsx",
-            "./src/components/sections/NowSection.tsx",
-          ],
+          "react-vendor": ["react", "react-dom"],
+          "socket-vendor": ["socket.io-client"],
         },
       },
     },

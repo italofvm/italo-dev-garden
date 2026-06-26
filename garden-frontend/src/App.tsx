@@ -1,5 +1,5 @@
 import type { JSX } from "react/jsx-runtime";
-import { lazy, Suspense, useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import "./styles/markdown.css";
 import {
   ThemeProvider,
