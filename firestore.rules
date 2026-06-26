@@ -1,0 +1,43 @@
+rules_version = '2';
+
+// Firestore Security Rules — italo-dev-garden
+//
+// Princípio: todo acesso direto pelo browser/SDK cliente é bloqueado por padrão.
+// O backend usa o Firebase Admin SDK, que IGNORA essas regras (acesso privilegiado).
+// Isso significa que essas regras só afetam quem tenta acessar o Firestore diretamente,
+// sem passar pelo seu backend — o que nunca deve acontecer em produção.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Projetos: leitura pública (o site exibe os projetos), escrita bloqueada
+    // (todas as escritas passam pelo backend com token Firebase Admin).
+    match /projects/{projectId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Posts do jardim digital: leitura pública, escrita bloqueada.
+    match /posts/{postId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Config da home: leitura pública (título, bio), escrita bloqueada.
+    match /config/{configId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Leads (mensagens de contato): completamente privados.
+    // Nem leitura pública — só o backend admin pode acessar.
+    match /leads/{leadId} {
+      allow read, write: if false;
+    }
+
+    // Regra catch-all: bloqueia qualquer outra coleção não listada acima.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

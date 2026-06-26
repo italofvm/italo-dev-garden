@@ -1,12 +1,12 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { isAdminAuthenticated, logoutAdmin } from "../services/authApi";
 
-// authApi lê localStorage para validar sessão do admin.
-// Aqui isolamos cada teste com beforeEach para garantir estado limpo.
+// authApi usa sessionStorage para armazenar a sessão do admin.
+// sessionStorage é isolado por aba e descartado ao fechar o browser.
 
 describe("isAdminAuthenticated", () => {
   beforeEach(() => {
-    localStorage.clear();
+    sessionStorage.clear();
   });
 
   it("retorna false quando não há token salvo", () => {
@@ -14,45 +14,44 @@ describe("isAdminAuthenticated", () => {
   });
 
   it("retorna false quando o token está expirado", () => {
-    const expiredTime = String(Date.now() - 1000); // 1 segundo atrás
-    localStorage.setItem("admin_token", "token-qualquer");
-    localStorage.setItem("admin_token_exp", expiredTime);
+    const expiredTime = String(Date.now() - 1000);
+    sessionStorage.setItem("admin_token", "token-qualquer");
+    sessionStorage.setItem("admin_token_exp", expiredTime);
 
     expect(isAdminAuthenticated()).toBe(false);
   });
 
   it("retorna true quando o token é válido e não expirou", () => {
-    const futureTime = String(Date.now() + 60 * 60 * 1000); // 1 hora à frente
-    localStorage.setItem("admin_token", "token-valido");
-    localStorage.setItem("admin_token_exp", futureTime);
+    const futureTime = String(Date.now() + 60 * 60 * 1000);
+    sessionStorage.setItem("admin_token", "token-valido");
+    sessionStorage.setItem("admin_token_exp", futureTime);
 
     expect(isAdminAuthenticated()).toBe(true);
   });
 
   it("retorna false quando há exp futuro mas sem token", () => {
     const futureTime = String(Date.now() + 60 * 60 * 1000);
-    localStorage.setItem("admin_token_exp", futureTime);
-    // sem admin_token
+    sessionStorage.setItem("admin_token_exp", futureTime);
 
     expect(isAdminAuthenticated()).toBe(false);
   });
 });
 
 describe("logoutAdmin", () => {
-  it("remove todos os dados de sessão do localStorage", () => {
-    localStorage.setItem("admin_token", "abc123");
-    localStorage.setItem("admin_email", "admin@email.com");
-    localStorage.setItem("admin_token_exp", "9999999999999");
+  it("remove todos os dados de sessão do sessionStorage", () => {
+    sessionStorage.setItem("admin_token", "abc123");
+    sessionStorage.setItem("admin_email", "admin@email.com");
+    sessionStorage.setItem("admin_token_exp", "9999999999999");
 
     logoutAdmin();
 
-    expect(localStorage.getItem("admin_token")).toBeNull();
-    expect(localStorage.getItem("admin_email")).toBeNull();
-    expect(localStorage.getItem("admin_token_exp")).toBeNull();
+    expect(sessionStorage.getItem("admin_token")).toBeNull();
+    expect(sessionStorage.getItem("admin_email")).toBeNull();
+    expect(sessionStorage.getItem("admin_token_exp")).toBeNull();
   });
 
-  it("não lança erro quando localStorage já está vazio", () => {
-    localStorage.clear();
+  it("não lança erro quando sessionStorage já está vazio", () => {
+    sessionStorage.clear();
     expect(() => logoutAdmin()).not.toThrow();
   });
 });

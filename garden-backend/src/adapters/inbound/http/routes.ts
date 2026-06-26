@@ -4,7 +4,8 @@ import { PostController } from "./controllers/PostController";
 import { LeadController } from "./controllers/LeadController";
 import { ConfigController } from "./controllers/ConfigController";
 import { authMiddleware } from "./middlewares/authMiddleware";
-import { leadRateLimiter } from "./middlewares/rateLimiter";
+import { auditLog } from "./middlewares/auditLog";
+import { leadRateLimiter, adminWriteLimiter } from "./middlewares/rateLimiter";
 import { ProjectService } from "../../../core/services/ProjectService";
 import { PostService } from "../../../core/services/PostService";
 import { LeadService } from "../../../core/services/LeadService";
@@ -30,22 +31,28 @@ export function buildRoutes(): Router {
     new ConfigService(new FirestoreConfigRepository()),
   );
 
+  // Middleware aplicado a todas as rotas de escrita autenticadas:
+  // 1. authMiddleware — valida token Firebase
+  // 2. auditLog — registra a operação (quem, quando, o quê)
+  // 3. adminWriteLimiter — limita 30 req/min para evitar abuso
+  const adminGuard = [authMiddleware, auditLog, adminWriteLimiter];
+
   router.get("/projects", projectController.getAll);
-  router.post("/projects", authMiddleware, projectController.create);
-  router.put("/projects/:id", authMiddleware, projectController.update);
-  router.delete("/projects/:id", authMiddleware, projectController.delete);
+  router.post("/projects", ...adminGuard, projectController.create);
+  router.put("/projects/:id", ...adminGuard, projectController.update);
+  router.delete("/projects/:id", ...adminGuard, projectController.delete);
 
   router.get("/posts", postController.getAll);
-  router.post("/posts", authMiddleware, postController.create);
-  router.put("/posts/:id", authMiddleware, postController.update);
-  router.delete("/posts/:id", authMiddleware, postController.delete);
+  router.post("/posts", ...adminGuard, postController.create);
+  router.put("/posts/:id", ...adminGuard, postController.update);
+  router.delete("/posts/:id", ...adminGuard, postController.delete);
 
   router.post("/leads", leadRateLimiter, leadController.create);
   router.get("/leads", authMiddleware, leadController.getAll);
-  router.delete("/leads/:id", authMiddleware, leadController.delete);
+  router.delete("/leads/:id", ...adminGuard, leadController.delete);
 
   router.get("/config", configController.get);
-  router.put("/config", authMiddleware, configController.update);
+  router.put("/config", ...adminGuard, configController.update);
 
   return router;
 }

@@ -6,11 +6,12 @@ import type {
   AdminPost,
   AdminLead,
 } from "../types/admin";
+import { getAdminToken } from "./authApi";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 function getAuthToken() {
-  return localStorage.getItem("admin_token");
+  return getAdminToken();
 }
 
 async function parseError(response: Response) {

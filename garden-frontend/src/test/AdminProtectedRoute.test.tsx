@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Routes, Route } from "react-router-dom";
 import { AdminProtectedRoute } from "../features/admin/AdminProtectedRoute";
@@ -8,10 +8,10 @@ import { AdminProtectedRoute } from "../features/admin/AdminProtectedRoute";
 
 function renderWithRouter(authenticated: boolean) {
   if (authenticated) {
-    localStorage.setItem("admin_token", "valid-token");
-    localStorage.setItem("admin_token_exp", String(Date.now() + 3600_000));
+    sessionStorage.setItem("admin_token", "valid-token");
+    sessionStorage.setItem("admin_token_exp", String(Date.now() + 3600_000));
   } else {
-    localStorage.clear();
+    sessionStorage.clear();
   }
 
   return render(
@@ -33,7 +33,7 @@ function renderWithRouter(authenticated: boolean) {
 
 describe("AdminProtectedRoute", () => {
   beforeEach(() => {
-    localStorage.clear();
+    sessionStorage.clear();
   });
 
   it("renderiza o conteúdo protegido quando o usuário está autenticado", () => {

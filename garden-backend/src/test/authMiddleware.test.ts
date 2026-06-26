@@ -58,7 +58,7 @@ describe("authMiddleware", () => {
 
   it("retorna 401 quando o token é inválido (verifyIdToken lança)", async () => {
     const verifyIdToken = vi.fn().mockRejectedValue(new Error("token inválido"));
-    vi.mocked(getAuth).mockReturnValue({ verifyIdToken } as ReturnType<typeof getAuth>);
+    vi.mocked(getAuth).mockReturnValue({ verifyIdToken } as unknown as ReturnType<typeof getAuth>);
 
     const { req, res, next, statusFn, jsonFn } = makeReqRes("Bearer token-ruim");
 
@@ -72,7 +72,7 @@ describe("authMiddleware", () => {
   it("chama next() e anexa user quando o token é válido", async () => {
     const fakeDecoded = { uid: "user-123", email: "admin@test.com" };
     const verifyIdToken = vi.fn().mockResolvedValue(fakeDecoded);
-    vi.mocked(getAuth).mockReturnValue({ verifyIdToken } as ReturnType<typeof getAuth>);
+    vi.mocked(getAuth).mockReturnValue({ verifyIdToken } as unknown as ReturnType<typeof getAuth>);
 
     const { req, res, next } = makeReqRes("Bearer token-valido");
 
