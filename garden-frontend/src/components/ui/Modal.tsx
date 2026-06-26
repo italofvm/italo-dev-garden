@@ -32,9 +32,9 @@ export function Modal({ isOpen, title, children, onClose }: ModalProps) {
       onClick={onClose}
     >
       <div
-        className="bg-lightCard dark:bg-darkCard w-full max-w-2xl rounded-3xl
+        className="bg-lightCard dark:bg-darkCard w-full max-w-4xl rounded-3xl
       border border-lightBorder dark:border-darkBorder shadow-2xl
-      p-6 md:p-8 max-h-[85vh] overflow-y-auto relative"
+      p-6 md:p-10 max-h-[90vh] overflow-y-auto relative"
         onClick={(e) => e?.stopPropagation()}
       >
         <button

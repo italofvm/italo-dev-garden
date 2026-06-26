@@ -133,7 +133,7 @@ function ModalContent({ note }: { note: Note }) {
 
       {/* Markdown renderizado com DOMPurify (XSS-safe) */}
       <div
-        className="prose prose-invert max-w-none text-neutral-600 dark:text-neutral-300 text-sm md:text-base border-t border-lightBorder dark:border-darkBorder pt-6"
+        className="prose dark:prose-invert max-w-none dark:text-neutral-300 border-t border-lightBorder dark:border-darkBorder pt-8 mt-6"
         dangerouslySetInnerHTML={{ __html: htmlContent }}
       />
     </div>
