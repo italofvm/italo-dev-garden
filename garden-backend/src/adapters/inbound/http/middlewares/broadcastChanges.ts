@@ -1,5 +1,5 @@
 import type { NextFunction, Response } from "express";
-import { broadcastUpdate } from "../socket/socketManager";
+import { broadcastUpdate } from "../../outbound/socket/socketManager";
 import type { AuthenticatedRequest } from "./authMiddleware";
 
 export function broadcastChanges(

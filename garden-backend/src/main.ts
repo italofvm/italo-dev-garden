@@ -5,6 +5,7 @@ import { createServer } from "http";
 import { Server as SocketIOServer } from "socket.io";
 import { buildRoutes } from "./adapters/inbound/http/routes";
 import { initializeSocket } from "./adapters/outbound/socket/socketManager";
+import { checkHealth } from "./adapters/outbound/health/healthService";
 
 const app = express();
 const port = Number(process.env.PORT ?? 3000);
@@ -45,8 +46,10 @@ app.use((_req: express.Request, res: express.Response, next: express.NextFunctio
   next();
 });
 
-app.get("/health", (_req: express.Request, res: express.Response) => {
-  res.status(200).json({ ok: true });
+app.get("/health", async (_req: express.Request, res: express.Response) => {
+  const healthResult = await checkHealth();
+  const statusCode = healthResult.status === "healthy" ? 200 : 503;
+  res.status(statusCode).json(healthResult);
 });
 
 app.use("/api", buildRoutes());
