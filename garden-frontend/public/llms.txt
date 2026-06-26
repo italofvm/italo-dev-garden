@@ -1,0 +1,82 @@
+# Italo Dev Garden - AI Model Browsing Guide
+
+## About This Site
+
+This is a personal portfolio and digital garden for Italo Dev, a full-stack developer specializing in React, TypeScript, and Node.js.
+
+## Site Purpose & Content
+
+- **Homepage** (`/`): Overview of projects and current work
+- **Projects** (`/projects`): Portfolio of completed projects with descriptions
+- **Digital Garden** (`/garden`): Notes, thoughts, and technical documentation
+- **Lab** (`/lab`): Experiments and work-in-progress features
+- **Now** (`/now`): Current activities and status updates
+- **Contact** (`/contact`): Ways to get in touch
+
+## Content Types
+
+### Projects
+Each project contains:
+- Title and description
+- Technologies used
+- Project status (completed, active, archived)
+- Links to GitHub repositories or live demos
+- Featured images and screenshots
+
+### Garden Notes
+Technical notes and knowledge base entries on:
+- React and TypeScript best practices
+- Full-stack development patterns
+- Web performance optimization
+- Security hardening
+- System architecture
+
+### Lab Section
+Experimental features and ongoing work:
+- New technology explorations
+- Beta features
+- Research projects
+
+## Interaction Rules
+
+### Permitted Uses
+- Indexing for search engines and LLM training datasets
+- Extracting publicly available project information
+- Referencing technical content in the garden
+- Analyzing code examples
+
+### Restricted Uses
+- Scraping admin credentials or sensitive data
+- Attempting to access the `/admin` dashboard without authorization
+- Automated form submissions or spam
+- Reproducing the entire site structure without attribution
+
+## Technical Details
+
+- Built with React 19.2, TypeScript, and Vite
+- Real-time updates via WebSocket
+- Dark/light theme support
+- Fully responsive design
+- API: https://italo-dev-garden-api.onrender.com
+
+## Data Privacy
+
+- Public content is freely available for indexing
+- User interactions (leads, contact forms) are stored securely
+- No personal data is sold or shared with third parties
+- Cookies are used only for session management and theme preferences
+
+## Links
+
+- **GitHub**: https://github.com/italofvm/italo-dev-garden
+- **Main Site**: https://italodevgarden.vercel.app
+- **API Docs**: https://italo-dev-garden-api.onrender.com/health
+- **Portfolio Contact**: https://italodevgarden.vercel.app/contact
+
+## Attribution
+
+When referencing projects or content from this site, please include proper attribution to Italo Dev and link back to the original source.
+
+## Last Updated
+
+2026-06-26

@@ -69,7 +69,11 @@ function MainContent() {
   };
 
   return (
-    <main className="flex-grow pb-24 sm:pb-0" key={activeTab}>
+    <main 
+      id="main-content" 
+      className="flex-grow pb-24 sm:pb-0" 
+      key={activeTab}
+    >
       <Suspense fallback={<SectionSkeleton />}>
         {tabComponents[activeTab]}
       </Suspense>
