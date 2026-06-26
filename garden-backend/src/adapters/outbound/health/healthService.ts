@@ -1,4 +1,4 @@
-import { getDb } from "../../config/firebase";
+import { getDb } from "../../../config/firebase";
 import { getAuth } from "firebase-admin/auth";
 
 export interface HealthCheckResult {
