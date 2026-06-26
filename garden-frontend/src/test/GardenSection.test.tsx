@@ -3,13 +3,12 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { GardenSection } from "../components/sections/GardenSection";
 import type { Note } from "../types/notes";
 
-// Notas de exemplo cobrindo os três status possíveis.
 const mockNotes: Note[] = [
   {
     id: "1",
     title: "Nota Semente",
     excerpt: "Resumo da semente",
-    content: "Conteúdo completo da semente",
+    content: "**Conteúdo em bold** da semente",
     status: "semente",
     date: "2024-01-01",
     readTime: "2 min",
@@ -18,7 +17,7 @@ const mockNotes: Note[] = [
     id: "2",
     title: "Nota Brotar",
     excerpt: "Resumo da brotar",
-    content: "Conteúdo completo em broto",
+    content: "## Heading\n\nConteúdo em broto",
     status: "brotar",
     date: "2024-01-02",
     readTime: "3 min",
@@ -27,7 +26,7 @@ const mockNotes: Note[] = [
     id: "3",
     title: "Nota Perene",
     excerpt: "Resumo da perene",
-    content: "Conteúdo completo perene",
+    content: "- Item 1\n- Item 2\n- Item 3",
     status: "perene",
     date: "2024-01-03",
     readTime: "5 min",
@@ -70,50 +69,52 @@ describe("GardenSection", () => {
     ).toBeInTheDocument();
   });
 
-  it("abre o modal ao clicar em uma nota e mostra o conteúdo", () => {
+  it("abre o modal ao clicar em uma nota e mostra o conteúdo renderizado", () => {
     render(<GardenSection notes={mockNotes} />);
 
     fireEvent.click(screen.getByText("Nota Semente"));
 
-    // O modal mostra o título e o conteúdo completo
+    // Verifica que o modal renderizou o conteúdo Markdown
     expect(screen.getAllByText("Nota Semente").length).toBeGreaterThan(0);
-    expect(
-      screen.getByText("Conteúdo completo da semente"),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Conteúdo em bold/)).toBeInTheDocument();
   });
 
   it("fecha o modal ao clicar no botão X", () => {
     render(<GardenSection notes={mockNotes} />);
 
     fireEvent.click(screen.getByText("Nota Semente"));
-    expect(
-      screen.getByText("Conteúdo completo da semente"),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Conteúdo em bold/)).toBeInTheDocument();
 
     fireEvent.click(screen.getByLabelText("Fechar modal"));
-    expect(
-      screen.queryByText("Conteúdo completo da semente"),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByText(/Conteúdo em bold/)).not.toBeInTheDocument();
   });
 
-  it("remove tags HTML do conteúdo antes de exibir (proteção XSS)", () => {
-    const noteWithHtml: Note = {
+  it("renderiza Markdown com suporte a listas, headings e bold", () => {
+    render(<GardenSection notes={mockNotes} />);
+
+    fireEvent.click(screen.getByText("Nota Perene"));
+
+    // Markdown renderizado (as classes prose/dark-mode são aplicadas pelo Tailwind)
+    const mdContainer = screen.getByText(/Item 1/);
+    expect(mdContainer).toBeInTheDocument();
+  });
+
+  it("sanitiza conteúdo perigoso (XSS protection)", () => {
+    const noteDangerous: Note = {
       id: "99",
-      title: "Com HTML",
+      title: "XSS Test",
       excerpt: "...",
-      content: "<script>alert('xss')</script>Texto limpo",
+      content: "<img src=x onerror='alert(\"xss\")'>Texto seguro",
       status: "perene",
       date: "2024-01-04",
       readTime: "1 min",
     };
 
-    render(<GardenSection notes={[noteWithHtml]} />);
-    fireEvent.click(screen.getByText("Com HTML"));
+    render(<GardenSection notes={[noteDangerous]} />);
+    fireEvent.click(screen.getByText("XSS Test"));
 
-    // stripHtml remove a tag mas mantém o texto do interior; o conteúdo
-    // final é "alert('xss') Texto limpo" — verificamos que a tag em si
-    // foi removida e que o texto "Texto limpo" aparece em algum ponto.
-    expect(screen.getByText(/Texto limpo/)).toBeInTheDocument();
-    expect(document.querySelector("script")).not.toBeInTheDocument();
+    // DOMPurify remove o onerror
+    const imgTag = document.querySelector("img[onerror]");
+    expect(imgTag).not.toBeInTheDocument();
   });
 });

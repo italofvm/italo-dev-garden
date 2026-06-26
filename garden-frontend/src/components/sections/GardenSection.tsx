@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { ChevronRight } from "lucide-react";
 import { Modal } from "../ui";
+import { useMarkdownContent } from "../../hooks/useMarkdownContent";
 import {
   statusColors,
   statusLabels,
@@ -12,10 +13,6 @@ type NoteFilter = "todos" | NoteStatus;
 
 interface GardenSectionProps {
   notes: Note[];
-}
-
-function stripHtml(value: string): string {
-  return value.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 }
 
 export function GardenSection({ notes }: GardenSectionProps) {
@@ -107,20 +104,7 @@ export function GardenSection({ notes }: GardenSectionProps) {
         title={selectedNote?.title}
       >
         {selectedNote && (
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 text-xs">
-              <span
-                className={`px-2 py-1 rounded font-mono font-semibold ${statusColors[selectedNote.status]}`}
-              >
-                {statusLabels[selectedNote.status]}
-              </span>
-              <span className="text-neutral-400">{selectedNote.date}</span>
-            </div>
-
-            <div className="text-neutral-600 dark:text-neutral-300 text-sm md:text-base leading-relaxed border-t border-lightBorder dark:border-darkBorder pt-6 whitespace-pre-line">
-              {stripHtml(selectedNote.content)}
-            </div>
-          </div>
+          <ModalContent note={selectedNote} />
         )}
       </Modal>
     </section>
@@ -132,6 +116,30 @@ interface FilterButtonProps {
   label: string;
   onClick: () => void;
 }
+
+function ModalContent({ note }: { note: Note }) {
+  const htmlContent = useMarkdownContent(note.content);
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-2 text-xs">
+        <span
+          className={`px-2 py-1 rounded font-mono font-semibold ${statusColors[note.status]}`}
+        >
+          {statusLabels[note.status]}
+        </span>
+        <span className="text-neutral-400">{note.date}</span>
+      </div>
+
+      {/* Markdown renderizado com DOMPurify (XSS-safe) */}
+      <div
+        className="prose prose-invert max-w-none text-neutral-600 dark:text-neutral-300 text-sm md:text-base border-t border-lightBorder dark:border-darkBorder pt-6"
+        dangerouslySetInnerHTML={{ __html: htmlContent }}
+      />
+    </div>
+  );
+}
+
 
 function FilterButton({ isActive, label, onClick }: FilterButtonProps) {
   return (
