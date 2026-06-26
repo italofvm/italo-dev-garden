@@ -18,6 +18,7 @@ import {
 import type { TabId } from "./types/navigation";
 import { useMouseGlow } from "./hooks/useMouseGlow";
 import { usePublicContent } from "./hooks/usePublicContent";
+import { useRealtimeUpdates } from "./hooks/useRealtimeUpdates";
 
 function MouseGlow() {
   const { position } = useMouseGlow();
@@ -42,7 +43,10 @@ function MouseGlow() {
 
 function MainContent() {
   const { activeTab } = useNavigation();
-  const { projects, notes, config } = usePublicContent();
+  const { projects, notes, config, refetch } = usePublicContent();
+
+  // Escutar atualizações em tempo real
+  useRealtimeUpdates(refetch, refetch, refetch);
 
   const tabComponents: Record<TabId, JSX.Element> = {
     home: <HomeSection projects={projects} config={config} />,

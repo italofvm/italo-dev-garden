@@ -1,7 +1,10 @@
 import express from "express";
 import "dotenv/config";
 import cors from "cors";
+import { createServer } from "http";
+import { Server as SocketIOServer } from "socket.io";
 import { buildRoutes } from "./adapters/inbound/http/routes";
+import { initializeSocket } from "./adapters/outbound/socket/socketManager";
 
 const app = express();
 const port = Number(process.env.PORT ?? 3000);
@@ -52,7 +55,20 @@ app.use((_req: express.Request, res: express.Response) => {
   res.status(404).json({ error: "Rota não encontrada" });
 });
 
-app.listen(port, () => {
+// Criar HTTP server para Socket.io
+const server = createServer(app);
+const io = new SocketIOServer(server, {
+  cors: {
+    origin: allowedOrigins,
+    methods: ["GET", "POST"],
+  },
+});
+
+initializeSocket(io);
+
+server.listen(port, () => {
   // eslint-disable-next-line no-console
   console.log(`🌱 API rodando em http://localhost:${port}`);
+  // eslint-disable-next-line no-console
+  console.log(`📡 WebSocket pronto em ws://localhost:${port}`);
 });

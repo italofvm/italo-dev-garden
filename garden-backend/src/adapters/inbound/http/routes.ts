@@ -5,6 +5,7 @@ import { LeadController } from "./controllers/LeadController";
 import { ConfigController } from "./controllers/ConfigController";
 import { authMiddleware } from "./middlewares/authMiddleware";
 import { auditLog } from "./middlewares/auditLog";
+import { broadcastChanges } from "./middlewares/broadcastChanges";
 import { leadRateLimiter, adminWriteLimiter } from "./middlewares/rateLimiter";
 import { ProjectService } from "../../../core/services/ProjectService";
 import { PostService } from "../../../core/services/PostService";
@@ -34,8 +35,9 @@ export function buildRoutes(): Router {
   // Middleware aplicado a todas as rotas de escrita autenticadas:
   // 1. authMiddleware — valida token Firebase
   // 2. auditLog — registra a operação (quem, quando, o quê)
-  // 3. adminWriteLimiter — limita 30 req/min para evitar abuso
-  const adminGuard = [authMiddleware, auditLog, adminWriteLimiter];
+  // 3. broadcastChanges — emite evento WebSocket para clientes
+  // 4. adminWriteLimiter — limita 30 req/min para evitar abuso
+  const adminGuard = [authMiddleware, auditLog, broadcastChanges, adminWriteLimiter];
 
   router.get("/projects", projectController.getAll);
   router.post("/projects", ...adminGuard, projectController.create);
@@ -47,7 +49,7 @@ export function buildRoutes(): Router {
   router.put("/posts/:id", ...adminGuard, postController.update);
   router.delete("/posts/:id", ...adminGuard, postController.delete);
 
-  router.post("/leads", leadRateLimiter, leadController.create);
+  router.post("/leads", leadRateLimiter, broadcastChanges, leadController.create);
   router.get("/leads", authMiddleware, leadController.getAll);
   router.delete("/leads/:id", ...adminGuard, leadController.delete);
 
