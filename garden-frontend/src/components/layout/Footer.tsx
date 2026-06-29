@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Copy, GitBranch, UserPenIcon } from "lucide-react";
+import { Copy, ExternalLink, GitBranch, UserPenIcon } from "lucide-react";
 import { Toast } from "../ui";
 
 export function Footer() {
@@ -36,6 +36,15 @@ export function Footer() {
         </div>
 
         <div className="flex gap-4 text-sm text-neutral-400">
+          <a
+            href="https://italovdev.vercel.app/pt"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-accent flex items-center gap-1.5"
+          >
+            <ExternalLink className="h-4 w-4" /> Outro Portfólio
+          </a>
+
           <a
             href="https://github.com/italofvm"
             target="_blank"
